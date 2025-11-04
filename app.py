@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # --- Configuration ---
 DATA_FILE = 'data.json'
-BASE_URL = 'https://add-vedio-files.onrender.com'  # your deployed Render link
+BASE_URL = 'https://add-vedio-files.onrender.com'  
 
 
 # --- Helper functions for saving/loading data ---
@@ -32,7 +32,7 @@ videos = load_data()
 # --- Routes ---
 @app.route('/')
 def home():
-    # You can redirect to your deployed site if running locally
+
     if not request.host.startswith("add-vedio-files.onrender.com"):
         return redirect(BASE_URL)
     return render_template('index.html', videos=videos)
