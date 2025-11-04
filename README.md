@@ -63,5 +63,5 @@ Josephine Nzioka
 
 ## License
 
-This project is licensed under the MIT License
+This project is licensed under the MIT License[License]
  — free to use, modify, and distribute.
