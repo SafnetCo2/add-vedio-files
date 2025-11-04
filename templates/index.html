@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube CRUD App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      background: #fff;
+      width: 100%;
+      max-width: 750px; /* 👈 limits width */
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #333;
+    }
+
+    form { margin-bottom: 20px; }
+
+    .video {
+      background: #fefefe;
+      border: 1px solid #ddd;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+    }
+
+    .comments { margin-top: 10px; padding-left: 10px; }
+
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      margin-bottom: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+
+    button {
+      padding: 8px 12px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover { background: #0056b3; }
+
+    .danger {
+      background: #dc3545;
+      margin-top: 5px;
+    }
+
+    .danger:hover { background: #b52a37; }
+
+    .update-box {
+      background: #eef;
+      padding: 10px;
+      margin-top: 10px;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎬 YouTube CRUD App</h1>
+
+    <h2>Add New Video</h2>
+    <form method="POST" action="/videos">
+      <input type="text" name="title" placeholder="Video Title" required>
+      <input type="text" name="author" placeholder="Author" required>
+      <button type="submit">Add Video</button>
+    </form>
+
+    <h2>All Videos</h2>
+    {% if videos %}
+      {% for video in videos %}
+        <div class="video">
+          <h3>{{ video.title }} <small>by {{ video.author }}</small></h3>
+
+          <!-- Update Form -->
+          <div class="update-box">
+            <h4>Update Video</h4>
+            <form method="POST" action="/videos/{{ video.id }}/update">
+              <input type="text" name="title" placeholder="New title" value="{{ video.title }}" required>
+              <input type="text" name="author" placeholder="New author" value="{{ video.author }}" required>
+              <button type="submit">Update</button>
+            </form>
+          </div>
+
+          <!-- Delete Button -->
+          <form method="POST" action="/videos/{{ video.id }}/delete">
+            <button type="submit" class="danger">Delete Video</button>
+          </form>
+
+          <!-- Comments -->
+          <div class="comments">
+            <h4>Comments:</h4>
+            {% if video.comments %}
+              <ul>
+                {% for c in video.comments %}
+                  <li><b>{{ c.user }}:</b> {{ c.text }}</li>
+                {% endfor %}
+              </ul>
+            {% else %}
+              <p>No comments yet.</p>
+            {% endif %}
+
+            <form method="POST" action="/videos/{{ video.id }}/comments">
+              <input type="text" name="user" placeholder="Your name" required>
+              <textarea name="text" placeholder="Add a comment..." required></textarea>
+              <button type="submit">Add Comment</button>
+            </form>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No videos added yet.</p>
+    {% endif %}
+  </div>
+</body>
+</html>

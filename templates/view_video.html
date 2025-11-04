@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>{{ video.title }}</h2>
+<p><strong>Uploaded by:</strong> {{ video.uploader }}</p>
+<hr>
+<h5>Comments</h5>
+<ul class="list-group mb-3">
+  {% for comment in video.comments %}
+    <li class="list-group-item d-flex justify-content-between">
+      <span><strong>{{ comment.author }}</strong>: {{ comment.text }}</span>
+      <a href="{{ url_for('delete_comment', video_id=video.id, comment_id=comment.id) }}" class="btn btn-sm btn-outline-danger">Delete</a>
+    </li>
+  {% else %}
+    <li class="list-group-item text-muted">No comments yet.</li>
+  {% endfor %}
+</ul>
+
+<form method="POST" action="{{ url_for('add_comment', video_id=video.id) }}">
+  <div class="mb-2">
+    <input type="text" name="author" placeholder="Your name" class="form-control" required>
+  </div>
+  <div class="mb-2">
+    <textarea name="text" placeholder="Write a comment..." class="form-control" required></textarea>
+  </div>
+  <button class="btn btn-success">Add Comment</button>
+</form>
+{% endblock %}
